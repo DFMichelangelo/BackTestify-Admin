@@ -1,0 +1,14 @@
+@import "../../configuration/variables.scss";
+
+#logsTopBoxes {
+	margin-bottom: $itemMargin;
+}
+
+#logsTable {
+	margin-top: $itemMargin;
+}
+@media only screen and (max-width: $mobileWidth) {
+	#logsInformationContent {
+		flex-direction: column !important;
+	}
+}
