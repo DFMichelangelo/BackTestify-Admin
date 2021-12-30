@@ -11,10 +11,9 @@ function PublicTemplate(props) {
 
   return (
     <div id="publicTemplate">
-      <img
+      <div
         id="left"
-        src={process.env.PUBLIC_URL + "/img/placeholders/publicTemplateSide.svg"}
-      />
+      ></div>
       <div id="right">
         {props.children}
       </div>

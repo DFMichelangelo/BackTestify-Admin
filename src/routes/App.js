@@ -19,9 +19,9 @@ import Account from "./Account";
 
 import { Trans } from "react-i18next";
 import UsersManagementSystem from "./UsersManagementSystem"
-const ErrorNotFound = lazy(() => import("views/Placeholders/ErrorNotFound"));
+const ErrorNotFound = lazy(() => import("theme/views/Placeholders/ErrorNotFound"));
 const Feedbacks = lazy(() => import("views/Feedbacks"));
-const Home = lazy(() => import("views/Home"));
+const Home = lazy(() => import("theme/views/Home"));
 const Dashboard = lazy(() => import("views/Dashboard"));
 const Logs = lazy(() => import("views/Logs"));
 const Database = lazy(() => import("views/Database"));

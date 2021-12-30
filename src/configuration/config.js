@@ -8,12 +8,12 @@ const config = {
     link: "https://www.linkedin.com/in/michelangelodefrancesco/",
   },
   palette: {
-    primaryColor: "#86DAF1",
+    primaryColor: "#729B79",
     secondaryColor: "#F3ff45",
   },
   theme: {
     roundLoader: {
-      color: "#86DAF1",
+      color: "#729B79",
     },
     forceTextColor: {
       enabled: false,
@@ -21,19 +21,19 @@ const config = {
     },
     header: {
       enabled: true,
-      color: "#86DAF1",
+      color: "#729B79",
       shadow: false,
     },
     sidebar: {
       enabled: true,
       drawerWidth: 240,
-      activeColor: "#86DAF1",
+      activeColor: "#729B79",
     },
     bottomNavigation: {
       enabled: false,
       showLabels: false,
       showOnDesktop: true,
-      activeColor: "#86DAF1",
+      activeColor: "#729B79",
     },
   },
 };
