@@ -10,7 +10,7 @@ import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
 import useFetch from "hooks/useFetch"
 import Endpoints from "Endpoints"
 function PrivacyPolicy(props) {
-  const [t, i18n] = useTranslation();
+  const { t } = useTranslation();
   const { fetch, data, loading } = useFetch()
   const loadData = async () => {
     await fetch({

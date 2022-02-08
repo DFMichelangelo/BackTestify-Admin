@@ -9,7 +9,7 @@ import useFetch from "hooks/useFetch"
 import Endpoints from "Endpoints"
 import RoundLoader from "components/RoundLoader";
 function TermsAndConditions(props) {
-  const [t, i18n] = useTranslation();
+  const { t } = useTranslation();
   const { fetch, data, loading } = useFetch()
   const loadData = async () => {
     await fetch({
