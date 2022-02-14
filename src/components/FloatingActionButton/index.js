@@ -4,7 +4,8 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Tooltip from '@mui/material/Tooltip'
 import Fab from '@mui/material/Fab'
 import './style.scss'
-import { Trans } from 'react-i18next'
+import { useTranslation } from "react-i18next";
+
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { useHistory } from "react-router-dom";
@@ -14,7 +15,7 @@ const FloatingActionButton = (props) => {
   const { color, icon, type, loading, success, disabled, tooltip, variant, className } = props
   const realDisabled = disabled || loading
   const history = useHistory();
-
+  const { t } = useTranslation();
   const handleOnClick = () => {
     const { onClick, href } = props
     if (typeof onClick === 'function') onClick()
@@ -28,7 +29,7 @@ const FloatingActionButton = (props) => {
   return (
     <div className={'fabButton ' + className} >
       {tooltip && !realDisabled ?
-        <Tooltip classes={{ tooltip: "tooltip" }} title={<Trans>{tooltip}</Trans>} placement="top">{button}</Tooltip>
+        <Tooltip classes={{ tooltip: "tooltip" }} title={t(tooltip)} placement="top">{button}</Tooltip>
         :
         button
       }

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, Button, CircularProgress } from "@mui/material";
+import { Card, CardContent, CardHeader, Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import Typography from "@mui/material/Typography";
 import "./style.scss";
 import { makeStyles } from "@mui/styles";
 import Avatar from "@mui/material/Avatar";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import useFormUtils from "hooks/useFormUtils";
 const useStyles = makeStyles((theme) => ({
@@ -23,7 +23,8 @@ function UploadProfileImageBox(props) {
   const { formikUser, setImageFileForForm } = props
   const classes = useStyles();
   const [image, setImage] = useState(formikUser.values.profileImageUrl && process.env.REACT_APP_API_URL + "/public/" + formikUser.values.profileImageUrl)
-  const { isNew } = useFormUtils()
+  const { isNew } = useFormUtils();
+  const { t } = useTranslation();
   const handleUploadClick = (event) => {
     if (event?.target?.files[0]) {
       let file = event.target.files[0];
@@ -35,13 +36,13 @@ function UploadProfileImageBox(props) {
 
       reader.onloadend = function (e) {
 
-      }.bind(this);
+      }
     }
   };
 
   return (
     <Card id="uploadProfileImageBox">
-      <CardHeader title={<Trans>profile.profileImage</Trans>} />
+      <CardHeader title={t("profile.profileImage")} />
       <CardContent>
         <div className="flex flex-col items-center">
           <div className="flex relative">
@@ -78,12 +79,12 @@ function UploadProfileImageBox(props) {
                   event.target.value = null;
                 }}
               />
-              <Trans>profile.upload</Trans>
+              {t("profile.upload")}
             </Button>
           </div>
           <div className="mt-2 mb-2 flex justify-center">
             <Typography color="textSecondary" variant="body1">
-              <Trans>profile.uploadImageText</Trans>
+              {t("profile.uploadImageText")}
             </Typography>
           </div>
         </div>

@@ -1,21 +1,18 @@
 import React, { useContext, useEffect } from "react";
 import { ThemeContext } from "contexts/Providers/ThemeProvider";
-import { UserContext } from "contexts/Providers/UserProvider";
 import "./style.scss";
 import LanguageBox from "./LanguageBox";
 import ProfileBox from "./ProfileBox";
 import DisableUserBox from "./DisableAccountBox";
 import ChangePasswordBox from "./ChangePasswordBox";
 import DoNotRememberPassword from "./DoNotRememberPassword";
-import useFetch from "hooks/useFetch";
-import _ from "lodash";
 import TopSide from "./TopSide";
 import { makeStyles } from "@mui/styles";
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import TabPanel from "components/TabPanel";
 import UploadProfileImageBox from "./UploadProfileImageBox";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -42,10 +39,9 @@ const useStyles = makeStyles((theme) => ({
 
 function Profile(props) {
   const themeContext = useContext(ThemeContext);
-  const userContext = useContext(UserContext);
-  const { data, fetchAll, loading } = useFetch();
   const [value, setValue] = React.useState(0);
   const classes = useStyles();
+  const { t } = useTranslation();
 
   const handleChange = (event, newValue) => setValue(newValue);
 
@@ -71,7 +67,7 @@ function Profile(props) {
               className={classes.tab}
               label={
                 <Typography variant="h6">
-                  <Trans>profile.profile</Trans>
+                  {t("profile.profile")}
                 </Typography>
               }
             />
@@ -79,7 +75,7 @@ function Profile(props) {
               className={classes.tab}
               label={
                 <Typography variant="h6">
-                  <Trans>Account</Trans>
+                  {t("Account")}
                 </Typography>
               }
             />

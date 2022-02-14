@@ -19,7 +19,7 @@ function useFetcher(props) {
 
   useEffect(() => {
     if (Array.isArray(props)) fetchAll(props);
-    else if (typeof props == "object") fetch(props);
+    else if (typeof props === "object") fetch(props);
   }, []);
 
   // ? if there is a UrlParams
@@ -53,10 +53,11 @@ function useFetcher(props) {
     const redirectToPage500 = _.get(options, "redirectToPage500", false);
     const showErrorSnackBar = _.get(options, "showErrorSnackBar", true);
     const redirectToLogin = _.get(options, "redirectToLogin", true);
-    const addBaseUrl = _.get(options, "addBaseUrl", true);
+    let addBaseUrl = _.get(options, "addBaseUrl", true);
+    addBaseUrl = options?.baseUrl ? false : addBaseUrl;
     const addHeadersForFiles = _.get(options, "addHeadersForFiles", false);
     const CORSHeaders =
-      addHeaders == true
+      addHeaders === true
         ? {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Headers":
@@ -76,14 +77,14 @@ function useFetcher(props) {
 
     // ? Create custom axios instance
     const axiosGateway = axios.create({
-      baseURL: addBaseUrl == true ? process.env.REACT_APP_API_URL : null,
+      baseURL: addBaseUrl === true ? process.env.REACT_APP_API_URL : options?.baseUrl,
       timeout: 30000,
       json: true,
       headers,
       withCredentials: true,
     });
     // ? attach global headers
-    if (addHeaders == false) {
+    if (addHeaders === false) {
       axiosGateway.defaults.headers.common = headers;
       axiosGateway.defaults.headers.patch = headers;
       axiosGateway.defaults.headers.post = headers;
@@ -114,8 +115,8 @@ function useFetcher(props) {
           err?.response?.status === 404
         ) {
           if (
-            err.response.data.message == "User is not authorized" ||
-            err.response.data.message == "Token expired"
+            err.response.data.message === "User is not authorized" ||
+            err.response.data.message === "Token expired"
           ) {
             const fetchToken = async () => {
               try {
@@ -137,12 +138,13 @@ function useFetcher(props) {
             };
             return fetchToken();
           }
-          else if (err.response.data.message == "User doesn't have right permission") themeContext.showErrorSnackbar({ message: "apiErrors.userDoesntHaveRightPermission" })
-          else if (err.response.data.message == "You don't have the permission due to your user role") themeContext.showErrorSnackbar({ message: "apiErrors.youDontHaveThePermissionDueToYourUserRole" })
-          else if (err.response.data.message == "RefreshToken Not Found") {
+          else if (err.response.data.message === "User doesn't have right permission") themeContext.showErrorSnackbar({ message: "apiErrors.userDoesntHaveRightPermission" })
+          else if (err.response.data.message === "You don't have the permission due to your user role") themeContext.showErrorSnackbar({ message: "apiErrors.youDontHaveThePermissionDueToYourUserRole" })
+          else if (err.response.data.message === "RefreshToken Not Found") {
             if (
-              history.location.pathname != "/" &&
-              !history.location.pathname.includes("/auth")
+              history.location.pathname !== "/" &&
+              !history.location.pathname.includes("/auth") &&
+              !history.location.pathname.includes("/p/")
             )
               themeContext.showWarningSnackbar({
                 message: "apiErrors.loginAgain",
@@ -152,15 +154,15 @@ function useFetcher(props) {
             throw err;
           }
         } else if (
-          counter.current[err.config.url + JSON.stringify(err.config.data)] >= 3
+          counter.current[err.config.url + JSON.stringify(err.config.data)] >= 1
         ) {
-          if ((err.response?.status == 500 || err.message.toString() == "Network Error") && redirectToPage500 === true) history.push("/error/500?returnUrl=" + history.location.pathname);
-          if ((err.response?.status == 500 || err.message.toString() == "Network Error") && redirectToPage500 === false && showErrorSnackBar === true) themeContext.showErrorSnackbar({ message: "somethingWentWrong" });
-          if (err.message.toString() == "Network Error" && redirectToPage500 == false) themeContext.showErrorSnackbar({ message: "apiErrors.networkError" });
+          if ((err.response?.status === 500 || err.message.toString() === "Network Error") && redirectToPage500 === true) history.push("/error/500?returnUrl=" + history.location.pathname);
+          if ((err.response?.status === 500 || err.message.toString() === "Network Error") && redirectToPage500 === false && showErrorSnackBar === true) themeContext.showErrorSnackbar({ message: "somethingWentWrong" });
+          if (err.message.toString() === "Network Error" && redirectToPage500 === false) themeContext.showErrorSnackbar({ message: "apiErrors.networkError" });
 
           throw err;
         } else {
-          if (err.response?.status == 400) themeContext.showErrorSnackbar({ message: "validationError" })
+          if (err.response?.status === 400) themeContext.showErrorSnackbar({ message: "validationError" })
           throw err;
         }
       }
@@ -205,9 +207,9 @@ function useFetcher(props) {
     let status = "start";
     let totalResult;
     let totalError;
-    while (status != "stop") {
+    while (status !== "stop") {
       try {
-        if (status != "start" && status != "stop")
+        if (status !== "start" && status !== "stop")
           options.params = { ...options.params, ...status };
         let result = await fetch(options);
         if (!totalResult) totalResult = [];
@@ -226,7 +228,7 @@ function useFetcher(props) {
   };
 
   const fetch = useCallback(async (options) => {
-    if (options.setLoading == true) setLoading(true);
+    if (options.setLoading === true) setLoading(true);
     if (!_.get(counter.current, options.url + JSON.stringify(options.data), false)) counter.current[options.url + JSON.stringify(options.data)] = 0;
 
     if (!(options?.data instanceof FormData) && options.file) {
@@ -234,6 +236,7 @@ function useFetcher(props) {
       formData.append(options.filename, options.file);
       options.addHeadersForFiles = true
       if (options?.data) Object.keys(options.data).forEach((key) => {
+
         if (Array.isArray(options.data[key])) options.data[key].map(elem => formData.append(key, elem))
         else formData.append(key, options.data[key])
       });
@@ -247,25 +250,25 @@ function useFetcher(props) {
     const axiosGateway = createAxiosGateway(options);
     let url = createUrl(options);
     try {
-      if (options.paginated == true) fetchPaginated(options);
+      if (options.paginated === true) fetchPaginated(options);
       else {
         let result = await axiosGateway({
           ...options,
           url,
         });
-        if (options.setData != false) {
+        if (options.setData !== false) {
           setData(result.data);
           setLoading(false);
         }
-        if (options.sendRaw == true) return result;
+        if (options.sendRaw === true) return result;
         else return result.data;
       }
     } catch (err) {
       if (
         err?.response?.status === 500 ||
-        err.message.toString() == "Network Error"
+        err.message.toString() === "Network Error"
       ) {
-        if (counter.current[options.url + JSON.stringify(options.data)] < 3) {
+        if (counter.current[options.url + JSON.stringify(options.data)] < 1) {
           counter.current[options.url + JSON.stringify(options.data)] =
             counter.current[options.url + JSON.stringify(options.data)] + 1;
           await new Promise((resolve) => setTimeout(resolve, 500));
@@ -274,13 +277,13 @@ function useFetcher(props) {
           counter.current[options.url + JSON.stringify(options.data)] = 0;
           /*if (err.message.toString() == "Network Error") {
           }*/
-          if (options.setLoading != false) setLoading(false);
-          if (options.setError != false) setError(err.response);
+          if (options.setLoading !== false) setLoading(false);
+          if (options.setError !== false) setError(err.response);
           throw err.response;
         }
       } else {
-        if (options.setLoading != false) setLoading(false);
-        if (options.setError != false) setError(err.response);
+        if (options.setLoading !== false) setLoading(false);
+        if (options.setError !== false) setError(err.response);
         throw err.response;
       }
     }

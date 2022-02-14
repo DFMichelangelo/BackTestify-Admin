@@ -4,7 +4,6 @@ import useFetch from "hooks/useFetch";
 import useFormUtils from "hooks/useFormUtils";
 import RoundLoader from "components/RoundLoader";
 import Endpoints from "Endpoints";
-import { Trans } from "react-i18next";
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import FloatingActionButton from "components/FloatingActionButton"
@@ -28,9 +27,8 @@ function UserForm(props) {
 
 
     const loadData = async () => {
-        console.log(props)
         try {
-            const result = await fetch({
+            await fetch({
                 url: Endpoints.user.getById,
                 urlParams: {
                     id: props.match.params.id

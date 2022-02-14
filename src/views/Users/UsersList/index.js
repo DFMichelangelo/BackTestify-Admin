@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { ThemeContext } from "contexts/Providers/ThemeProvider";
 import useFetch from "hooks/useFetch";
 import RoundLoader from "components/RoundLoader";
 import EnhancedTable from "components/EnhancedTable";
 import Endpoints from "Endpoints";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Card } from "@mui/material";
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -16,7 +16,7 @@ import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
 import TouchAppOutlinedIcon from '@mui/icons-material/TouchAppOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import AccessibilityOutlinedIcon from '@mui/icons-material/AccessibilityOutlined';
-import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+
 function UsersList(props) {
     const themeContext = useContext(ThemeContext);
     const { loading, data, fetch } = useFetch();
@@ -24,11 +24,12 @@ function UsersList(props) {
     const { fetch: fetchSendActivationEmail } = useFetch();
     const { fetch: fetchDisableUser } = useFetch();
     const { fetch: fetchImpersonificateUser } = useFetch();
+    const { t } = useTranslation();
     const history = useHistory();
 
     const loadData = async () => {
         try {
-            const result = await fetch({
+            await fetch({
                 url: Endpoints.user.getAll,
                 method: "GET",
             })
@@ -50,19 +51,19 @@ function UsersList(props) {
         },
         {
             id: "firstname",
-            label: <Trans>users.firstname</Trans>,
+            label: t("users.firstname"),
         },
         {
             id: "lastname",
-            label: <Trans>users.lastname</Trans>,
+            label: t("users.lastname"),
         },
         {
             id: "status",
-            label: <Trans>users.status</Trans>,
+            label: t("users.status"),
         },
         {
             id: "role",
-            label: <Trans>users.role</Trans>,
+            label: t("users.role"),
         }
     ]
 
@@ -148,7 +149,7 @@ function UsersList(props) {
                         {
                             tooltip: "users.disableUser",
                             icon: <DeleteOutlineOutlinedIcon />,
-                            disabled: id => !Array.isArray(id) && data.find(element => element.id == id).status === "DISABLED",
+                            disabled: id => !Array.isArray(id) && data.find(element => element.id === id).status === "DISABLED",
                             onClick: async id => {
                                 await fetchDisableUser({
                                     url: Endpoints.user.editByAdmin,

@@ -4,7 +4,7 @@ import useFetch from "hooks/useFetch";
 import RoundLoader from "components/RoundLoader";
 import EnhancedTable from "components/EnhancedTable";
 import Endpoints from "Endpoints";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Card } from "@mui/material";
 import "./style.scss";
 import BugReportOutlinedIcon from '@mui/icons-material/BugReportOutlined';
@@ -19,10 +19,10 @@ function Feedbacks(props) {
     const { loading, data, fetch } = useFetch();
     const { fetch: fetchDeleteFeedback } = useFetch();
     const { fetch: fetchEditFeedback } = useFetch();
-
+    const { t } = useTranslation();
     const loadData = async () => {
         try {
-            const result = await fetch({
+            await fetch({
                 url: Endpoints.feedback.getAll,
                 method: "GET",
             })
@@ -35,7 +35,7 @@ function Feedbacks(props) {
         await fetchEditFeedback({
             url: Endpoints.feedback.editById,
             method: "PUT",
-            data: { id, handled: !data.find(feedback => feedback.id == id).handled }
+            data: { id, handled: !data.find(feedback => feedback.id === id).handled }
         })
 
     }
@@ -48,31 +48,31 @@ function Feedbacks(props) {
     const headCells = [
         {
             id: "description",
-            label: <Trans>feedbacks.description</Trans>,
+            label: t("feedbacks.description"),
         },
         {
             id: "type",
-            label: <Trans>feedbacks.type</Trans>,
+            label: t("feedbacks.type"),
         },
         {
             id: "handled",
-            label: <Trans>feedbacks.handled</Trans>,
+            label: t("feedbacks.handled"),
         },
         {
             id: "path",
-            label: <Trans>feedbacks.path</Trans>,
+            label: t("feedbacks.path"),
         },
         {
             id: "createdAt",
-            label: <Trans>feedbacks.createdAt</Trans>,
+            label: t("feedbacks.createdAt"),
         },
         {
             id: "createdBy",
-            label: <Trans>feedbacks.createdBy</Trans>,
+            label: t("feedbacks.createdBy"),
         },
         {
             id: "screenshot",
-            label: <Trans>feedbacks.screenshot</Trans>,
+            label: t("feedbacks.screenshot"),
         }
     ]
 
@@ -83,7 +83,7 @@ function Feedbacks(props) {
             id: feedback.id,
             type: {
                 value: feedback.type,
-                component: feedback.type == "BUG" ? <BugReportOutlinedIcon /> : <EmojiObjectsOutlinedIcon />
+                component: feedback.type === "BUG" ? <BugReportOutlinedIcon /> : <EmojiObjectsOutlinedIcon />
             },
             description: {
                 value: feedback.description,

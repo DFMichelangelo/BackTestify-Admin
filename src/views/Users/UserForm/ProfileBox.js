@@ -1,10 +1,9 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import { Card, CardContent, CardHeader } from "@mui/material";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import TextField from "@mui/material/TextField";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import useFormUtils from "hooks/useFormUtils";
@@ -13,16 +12,17 @@ import "./style.scss";
 function ProfileBox(props) {
   const { isNew } = useFormUtils();
   const { formikUser } = props
+  const { t } = useTranslation();
 
   return (
     <Card id="userFormPersonalInformationBox">
-      <CardHeader title={<Trans>profile.personalInformation</Trans>} />
+      <CardHeader title={t("profile.personalInformation")} />
 
       <CardContent>
         <div className="flex flex-col">
           <TextField
             id="firstname"
-            label={<Trans>profile.firstname</Trans>}
+            label={t("profile.firstname")}
             variant="filled"
             onChange={formikUser.handleChange}
             value={formikUser.values?.firstname || ""}
@@ -30,7 +30,7 @@ function ProfileBox(props) {
 
           <TextField
             id="lastname"
-            label={<Trans>profile.lastname</Trans>}
+            label={t("profile.lastname")}
             variant="filled"
             onChange={formikUser.handleChange}
             value={formikUser.values?.lastname || ""}
@@ -38,7 +38,7 @@ function ProfileBox(props) {
           <TextField
             id="email"
             error={Boolean(formikUser.errors.email)}
-            helperText={<Trans>{formikUser.errors.email}</Trans>}
+            helperText={t(formikUser.errors.email)}
             onBlur={formikUser.handleBlur}
             label="Email"
             variant="filled"
@@ -56,9 +56,8 @@ function ProfileBox(props) {
               formikUser.touched.password && Boolean(formikUser.errors.password)
             }
             helperText={
-              formikUser.touched.password && (
-                <Trans>{formikUser.errors.password}</Trans>
-              )
+              formikUser.touched.password &&
+              t(formikUser.errors.password)
             }
             onBlur={formikUser.handleBlur}
           />
@@ -67,7 +66,7 @@ function ProfileBox(props) {
             <TextField
               disabled
               id="createdAt"
-              label={<Trans>users.createdAt</Trans>}
+              label={t("users.createdAt")}
               variant="filled"
               onChange={formikUser.handleChange}
               value={formikUser.values.createdAt}
@@ -76,7 +75,7 @@ function ProfileBox(props) {
             <TextField
               disabled
               id="updatedAt"
-              label={<Trans>users.updatedAt</Trans>}
+              label={t("users.updatedAt")}
               variant="filled"
               onChange={formikUser.handleChange}
               value={formikUser.values.updatedAt}
@@ -87,7 +86,7 @@ function ProfileBox(props) {
 
           <FormControl variant="filled">
             <InputLabel shrink >
-              <Trans>users.role</Trans>
+              {t("users.role")}
             </InputLabel>
             <Select
               name="role"
@@ -104,7 +103,7 @@ function ProfileBox(props) {
 
           <FormControl variant="filled">
             <InputLabel shrink >
-              <Trans>users.status</Trans>
+              {t("users.status")}
             </InputLabel>
             <Select
               name="status"
@@ -112,9 +111,9 @@ function ProfileBox(props) {
               onChange={formikUser.handleChange}
 
             >
-              <MenuItem value={"ACTIVE"}><Trans>users.active</Trans></MenuItem>
-              <MenuItem value={"PENDING"}><Trans>users.pending</Trans></MenuItem>
-              <MenuItem value={"DISABLED"}><Trans>users.disabled</Trans></MenuItem>
+              <MenuItem value={"ACTIVE"}>  {t("users.active")}</MenuItem>
+              <MenuItem value={"PENDING"}> {t("users.pending")}</MenuItem>
+              <MenuItem value={"DISABLED"}>{t("users.disabled")}</MenuItem>
             </Select>
           </FormControl>
 

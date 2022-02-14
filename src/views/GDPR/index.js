@@ -1,9 +1,7 @@
 import React, { useContext, useEffect } from "react";
-import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js'
-import draftToHtml from 'draftjs-to-html'
 import "./style.scss";
 import { Card, CardContent, Button, CardHeader } from "@mui/material";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import CardActions from "@mui/material/CardActions";
 import { useFormik } from "formik";
 import { Editor as EditorWYSIWYG } from 'react-draft-wysiwyg';
@@ -19,8 +17,8 @@ function GDPR(props) {
     const themeContext = useContext(ThemeContext)
     const { fetch: privacyPolicyFetch } = useFetch();
     const { fetch: termsAndConditionsFetch } = useFetch();
-    const { loading, data: fetchedData, fetchAll } = useFetch();
-
+    const { loading, fetchAll } = useFetch();
+    const { t } = useTranslation();
     const loadData = async () => {
         const t = await fetchAll([
             {
@@ -116,13 +114,13 @@ function GDPR(props) {
                             type="submit"
                             disabled={formikPrivacyPolicy.isSubmitting}
                         >
-                            <Trans>save</Trans>
+                            {t("save")}
                         </Button>
                     </CardActions>
                 </form>
             </Card>
             <Card id="termsAndConditionseBox">
-                <CardHeader title={<Trans>tos.termsAndConditions</Trans>} />
+                <CardHeader title={t("tos.termsAndConditions")} />
                 <form onSubmit={formiktermsAndConditions.handleSubmit}>
                     <CardContent>
                         <EditorWYSIWYG
@@ -139,7 +137,7 @@ function GDPR(props) {
                             type="submit"
                             disabled={formiktermsAndConditions.isSubmitting}
                         >
-                            <Trans>save</Trans>
+                            {t("save")}
                         </Button>
                     </CardActions>
                 </form>

@@ -7,7 +7,7 @@ import EnhancedTable from "components/EnhancedTable";
 import Endpoints from "Endpoints";
 import TopBoxes from "./TopBoxes"
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import { Card, CardContent, CardHeader, Chip } from "@mui/material";
+import { Card, Chip } from "@mui/material";
 import "./style.scss";
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 
@@ -16,7 +16,7 @@ function LogsList(props) {
     const { loading, data, fetch } = useFetch();
     const loadData = async () => {
         try {
-            const result = await fetch({
+            await fetch({
                 url: Endpoints.logs.getAll,
                 method: "GET",
             })

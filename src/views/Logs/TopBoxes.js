@@ -1,14 +1,15 @@
 import React from "react";
 import "./style.scss";
 import { Card, CardContent, CardHeader } from "@mui/material";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { DateTime } from "luxon"
 import FieldAndValue from 'components/FieldAndValue'
 function TopBoxes(props) {
+    const { t } = useTranslation();
     const { startDate, endDate, amountOfDataKept } = props
     return (
         <Card id="logsTopBoxes">
-            <CardHeader title={<Trans>logs.information</Trans>} />
+            <CardHeader title={t("logs.information")} />
             <CardContent>
                 <div id="logsInformationContent" className=" flex justify-between">
                     <FieldAndValue
@@ -26,7 +27,7 @@ function TopBoxes(props) {
                         value={
                             <>
                                 {amountOfDataKept}{" "}
-                                <Trans>logs.days</Trans>
+                                {t("logs.days")}
                             </>
                         }
                     />

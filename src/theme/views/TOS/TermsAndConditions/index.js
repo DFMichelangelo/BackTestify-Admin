@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import "./style.scss";
-import Typography from "@mui/material/Typography";
 import PublicAppBar from "components/PublicAppBar";
 import config from "configuration/config";
 import Helmet from "react-helmet";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import useFetch from "hooks/useFetch"
 import Endpoints from "Endpoints"
 import RoundLoader from "components/RoundLoader";

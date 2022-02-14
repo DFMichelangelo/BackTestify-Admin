@@ -17,7 +17,7 @@ import useFetch from "hooks/useFetch";
 import roles from 'auxiliaries/roles'
 import Account from "./Account";
 
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import UsersManagementSystem from "./UsersManagementSystem"
 const ErrorNotFound = lazy(() => import("theme/views/Placeholders/ErrorNotFound"));
 const Feedbacks = lazy(() => import("views/Feedbacks"));
@@ -33,6 +33,7 @@ function App(props) {
   const [loading, setLoading] = useState(true);
   const history = useHistory();
   const { fetch } = useFetch();
+  const { t } = useTranslation();
 
   const isAdmin = (user) => {
     if (!user) return false;
@@ -57,8 +58,8 @@ function App(props) {
 
       if (!isAdmin(data)) {
         themeContext.showWarningDialog({
-          title: <Trans>youCantEnter</Trans>,
-          message: <Trans>youAreNotAnAdministrator</Trans>,
+          title: t("youCantEnter"),
+          message: t("youAreNotAnAdministrator"),
           onClose: async () => {
             try {
               await fetch({
@@ -75,7 +76,7 @@ function App(props) {
       userContext.setUser(data);
       setLoading(false);
     } catch (e) {
-      if (e?.status == 404) {
+      if (e?.status === 404) {
         history.push("auth/login?returnUrl=" + history.location.pathname);
         //themeContext.showWarningSnackbar({ message: "loginAgain" })
       }

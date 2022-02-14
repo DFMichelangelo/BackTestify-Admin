@@ -1,15 +1,16 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import { Card, CardContent, CardHeader } from "@mui/material";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import "./style.scss";
-import FormGroup from '@mui/material/FormGroup';
+
 function UtilitiesBox(props) {
+    const { t } = useTranslation();
     const { formikUser } = props
     return (
         <Card id="utilitiesBox">
-            <CardHeader title={<Trans>users.utilities</Trans>} />
+            <CardHeader title={t("users.utilities")} />
 
             <CardContent>
                 <div className="flex flex-col">
@@ -22,7 +23,7 @@ function UtilitiesBox(props) {
                                 color="primary"
                             />
                         }
-                        label={<Trans>users.sendActivationEmail</Trans>}
+                        label={t("users.sendActivationEmail")}
                     />
                 </div>
             </CardContent>

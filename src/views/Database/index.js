@@ -4,15 +4,16 @@ import useFetch from "hooks/useFetch";
 import RoundLoader from "components/RoundLoader";
 import EnhancedTable from "components/EnhancedTable";
 import Endpoints from "Endpoints";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
-import { Card, CardContent, CardHeader, Box, Typography } from "@mui/material";
+import { Card, CardContent, CardHeader } from "@mui/material";
 import FieldAndValue from 'components/FieldAndValue'
 
 function Database(props) {
     const themeContext = useContext(ThemeContext);
     const { loading, data, fetch } = useFetch();
+    const { t } = useTranslation();
 
     const loadData = async () => {
         try {
@@ -34,11 +35,11 @@ function Database(props) {
     const headCells = [
         {
             id: "table_name",
-            label: <Trans>database.tableName</Trans>,
+            label: t("database.tableName"),
         },
         {
             id: "pg_size_pretty",
-            label: <Trans>database.size</Trans>,
+            label: t("database.size"),
         },
     ]
 
@@ -59,7 +60,7 @@ function Database(props) {
     return (
         <div className="flex flex-col">
             <Card id="databaseInformationBox">
-                <CardHeader title={<Trans>database.information</Trans>} />
+                <CardHeader title={t("database.information")} />
                 <CardContent>
                     <FieldAndValue
                         field="database.totalTablesSize"
@@ -78,7 +79,7 @@ function Database(props) {
                     readOnly
                     showFilters={false}
                     showSearchbar={false}
-                    title={<Trans>database.tablesSize</Trans>}
+                    title={t("database.tablesSize")}
                 />
             </Card>
         </div>

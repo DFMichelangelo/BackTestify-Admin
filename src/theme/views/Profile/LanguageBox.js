@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Card, CardContent, CardHeader } from "@mui/material";
-import { Trans } from "react-i18next";
-import Divider from "@mui/material/Divider";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 import MenuItem from "@mui/material/MenuItem";
 import i18next from "i18next";
@@ -12,13 +11,14 @@ import Endpoints from "Endpoints";
 
 function LanguageBox(props) {
   const themeContext = useContext(ThemeContext);
-  const { fetch, data } = useFetch();
+  const { fetch } = useFetch();
+  const { t } = useTranslation();
   const changeLanguage = (e) => {
 
     i18next.changeLanguage(e.target.value, async (err, t) => {
       if (err)
         themeContext.showErrorSnackbar({
-          message: <Trans>somethingWentWrong</Trans>,
+          message: t("somethingWentWrong"),
         });
       else {
         try {
@@ -36,10 +36,10 @@ function LanguageBox(props) {
 
   return (
     <Card id="languageBox">
-      <CardHeader title={<Trans>profile.language</Trans>} />
+      <CardHeader title={t("profile.language")} />
       <CardContent className="flex flex-col">
         <div>
-          <Trans>profile.preferredLanguageText</Trans>
+          {t("profile.preferredLanguageText")}
         </div>
         <div className="mt-3 flex justify-center">
           <Select

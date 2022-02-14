@@ -10,13 +10,12 @@ import {
   Select,
 } from "@mui/material";
 import { useFormik } from "formik";
-import _ from "lodash";
 import useFetch from "hooks/useFetch";
 import Endpoints from "Endpoints";
 import "./style.scss";
 import { ThemeContext } from "contexts/Providers/ThemeProvider";
 import html2canvas from "html2canvas";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import BugReportOutlinedIcon from "@mui/icons-material/BugReportOutlined";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
@@ -58,7 +57,7 @@ function Feedback(props) {
       // ? Submitting
       try {
         let file = null;
-        if (values.includeScreenshot == true) {
+        if (values.includeScreenshot === true) {
           let screen = await html2canvas(document.getElementById("root"));
           const blob = canvasToBlob(screen);
           file = new File([blob], "image.png", {
@@ -139,7 +138,7 @@ function Feedback(props) {
           fontSize="small"
         />
         <Typography color="textSecondary" variant="body2">
-          <Trans>feedback.sendAFeedback</Trans>
+          {t("feedback.sendAFeedback")}
         </Typography>
       </span>
     </MenuItem>
@@ -151,7 +150,7 @@ function Feedback(props) {
       <Dialog open={open} fullWidth={true} onClose={closeFeedbackPopover}>
         <form onSubmit={feedbackForm.handleSubmit}>
           <DialogTitle>
-            <Trans>feedback.sendAFeedback</Trans>
+            {t("feedback.sendAFeedback")}
           </DialogTitle>
           <DialogContent>
             <div className="flex flex-col">
@@ -167,13 +166,13 @@ function Feedback(props) {
                         checked={feedbackForm.values.includeScreenshot}
                       />
                     }
-                    label={<Trans>feedback.includeScreenshot</Trans>}
+                    label={t("feedback.includeScreenshot")}
                   />
                 </div>
                 <div>
                   <FormControl variant="filled">
                     <InputLabel>
-                      <Trans>feedback.type</Trans>
+                      {t("feedback.type")}
                     </InputLabel>
                     <Select
                       onChange={(e) => {
@@ -206,14 +205,14 @@ function Feedback(props) {
               onClick={closeFeedbackPopover}
               color="primary"
             >
-              <Trans>close</Trans>
+              {t("close")}
             </Button>
             <Button
               disabled={feedbackForm.isSubmitting || !feedbackForm.values.description}
               type="submit"
               color="primary"
             >
-              <Trans>feedback.send</Trans>
+              {t("feedback.send")}
             </Button>
           </DialogActions>
         </form>
