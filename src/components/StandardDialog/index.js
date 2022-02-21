@@ -22,10 +22,9 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 function StandardDialog(props) {
-  const { t } = useTranslation();
   const [moreOpen, setMoreOpen] = useState(false);
   const themeContext = useContext(ThemeContext);
-
+  const { t } = useTranslation();
   useEffect(() => {
     createValidationSchema();
   }, []);
@@ -173,8 +172,8 @@ function StandardDialog(props) {
       validationSchema={validationSchema}
       initialValues={{
         text: "",
-      }}
-      render={(formikBag) => {
+      }}>
+      {(formikBag) => {
         const buttons = createButtons(formikBag, showMoreInfo);
         return (
           <Form>
@@ -186,7 +185,7 @@ function StandardDialog(props) {
               className={classNames("standard-dialog input", type)}
             >
               <DialogTitle className="title">
-                {realIcon}
+                <span>{realIcon}</span>
                 <span className="text">{title}</span>
               </DialogTitle>
               <DialogContent className="content">
@@ -209,7 +208,7 @@ function StandardDialog(props) {
           </Form>
         );
       }}
-    />
+    </Formik>
   );
 }
 

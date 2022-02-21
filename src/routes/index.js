@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import RoutingApp from "./App";
 import { ThemeContext } from "contexts/Providers/ThemeProvider";
 import RoutingAuth from "./Auth";
-
+import classnames from "classnames";
 import i18n from "i18n";
 import CookieConsentDrawer from "theme/CookieConsentDrawer";
 import { DateTime } from "luxon";
@@ -51,7 +51,7 @@ function App(props) {
 
 
   return (
-    <span>
+    <span className={classnames(themeContext.muiType == "light" ? "lightTheme" : "darkTheme")}>
       <CookieConsentDrawer />
       <Switch>
         <Route path="/terms-of-service" component={TermsAndConditions} />
