@@ -12,6 +12,7 @@ import CustomScrollbar from "components/CustomScrollbar";
 import { useHistory } from "react-router-dom";
 
 const openedMixin = (theme) => ({
+
   overflowY: "hidden",
   width: config.theme.sidebar.drawerWidth,
   transition: theme.transitions.create('width', {
@@ -30,7 +31,6 @@ const closedMixin = (theme) => ({
   }),
   overflowX: 'hidden',
   overflowY: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(9)} + 1px)`,
   },
@@ -41,6 +41,7 @@ const closedMixin = (theme) => ({
 
 const Drawer = styled(SwipeableDrawer, { shouldForwardProp: (prop) => prop !== 'openSB' & prop !== "matches" })(
   ({ theme, openSB, matches }) => ({
+    position: "absolute",
     width: config.theme.sidebar.drawerWidth,
     flexShrink: 0,
     ...matches && { zIndex: "1300 !important" }, // ? In order to let cookie consent visible
@@ -48,6 +49,7 @@ const Drawer = styled(SwipeableDrawer, { shouldForwardProp: (prop) => prop !== '
     boxSizing: 'border-box',
     ...(openSB && {
       ...openedMixin(theme),
+
       '& .MuiDrawer-paper': openedMixin(theme),
     }),
     ...(!openSB && {
@@ -90,7 +92,6 @@ function Sidebar(props) {
     handleDrawerOpenOnClick,
     handleDrawerCloseOnClick,
   } = props;
-
   const themeContext = useContext(ThemeContext);
 
   return (

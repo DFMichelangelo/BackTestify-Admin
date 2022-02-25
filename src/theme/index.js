@@ -6,7 +6,7 @@ import BottomNavigation from "theme/BottomNavigation";
 import config from "configuration/config";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { styled } from '@mui/material/styles';
-
+import Backdrop from '@mui/material/Backdrop';
 
 export default function Theme(props) {
   const themeContext = useContext(ThemeContext);
@@ -15,6 +15,11 @@ export default function Theme(props) {
   const handleDrawerOpenOnClick = () => isOpen(true, "click");
   const handleDrawerCloseOnClick = () => isOpen(false, "click");
   const matches = useMediaQuery("(max-width:" + config.mobileScreenWidth + ")");
+
+  const DivBehindDrawer = styled('div')(({ theme }) => ({
+    width: `calc(${theme.spacing(9)} + 5px)`,
+    //backgroundColor: "red",
+  }));
 
   const isOpen = (value, openType) => {
     if (
@@ -40,18 +45,28 @@ export default function Theme(props) {
       {config.theme.header.enabled && (
         <Header handleDrawerOpenOnClick={handleDrawerOpenOnClick} />
       )}
-      {themeContext.showSidebarComponents(matches) && (
+      {themeContext.showSidebarComponents(matches) && (<>
+        <DivBehindDrawer />
         <Sidebar
           handleDrawerOpenOnHover={handleDrawerOpenOnHover}
           handleDrawerCloseOnHover={handleDrawerCloseOnHover}
           handleDrawerCloseOnClick={handleDrawerCloseOnClick}
           handleDrawerOpenOnClick={handleDrawerOpenOnHover}
-        />
+        /></>
       )}
       <div className="w-full h-full overflow-x-hidden">
         <div className="contentHeight">
+
           <DrawerHeader />
+
+          <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer - 1 }}
+            open={themeContext.sidebarOpen}
+            onClick={() => themeContext.setSidebarOpen(false)}
+          >
+          </Backdrop>
           {props.children}
+
         </div>
         <div>
           {config.theme.bottomNavigation.enabled && <BottomNavigation />}

@@ -1,29 +1,29 @@
-import React, { useState, useContext } from "react";
-import Avatar from "@mui/material/Avatar";
-import "./style.scss";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import { useTranslation } from "react-i18next";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
-import Divider from "@mui/material/Divider";
+import Brightness3OutlinedIcon from "@mui/icons-material/Brightness3Outlined";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
+import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { useHistory } from "react-router-dom";
-import { ThemeContext } from "contexts/Providers/ThemeProvider";
-import Brightness3OutlinedIcon from "@mui/icons-material/Brightness3Outlined";
-import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
-import { UserContext } from "contexts/Providers/UserProvider";
-import InstallPWAButton from "theme/Header/InstallPWAButton";
-import Feedback from "theme/Header/Feedback";
-import useFetch from "hooks/useFetch";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import config from "configuration/config";
+import { ThemeContext } from "contexts/Providers/ThemeProvider";
+import { UserContext } from "contexts/Providers/UserProvider";
 import Endpoints from "Endpoints";
-
+import useFetch from "hooks/useFetch";
+import React, { useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
+import Feedback from "theme/Header/Feedback";
+import InstallPWAButton from "theme/Header/InstallPWAButton";
+import "./style.scss";
 function ProfileButton(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const themeContext = useContext(ThemeContext);
@@ -34,7 +34,6 @@ function ProfileButton(props) {
   const { t } = useTranslation();
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
-
   return (
     <div className="profileButton flex-grow flex justify-end">
       <Tooltip title={t("profileButton.profile")}>
@@ -45,7 +44,7 @@ function ProfileButton(props) {
         >
           <Avatar
             sx={{ width: 32, height: 32 }}
-            src={userContext.user.profileImageUrl &&
+            src={userContext?.user?.profileImageUrl &&
               process.env.REACT_APP_API_URL + "/public/" +
               userContext.user.profileImageUrl
             }
@@ -53,8 +52,7 @@ function ProfileButton(props) {
           {!matches && (
             <span className="ml-2">
               <Typography variant="body2">
-                {userContext?.user?.firstname ||
-                  t("profileButton.welcome")
+                {userContext?.user?.firstname || t("profileButton.welcome")
                 }
               </Typography>
             </span>
@@ -84,6 +82,7 @@ function ProfileButton(props) {
         id="profileMenu"
       >
         <MenuItem
+          disabled={Boolean(!userContext?.user)}
           onClick={() => {
             history.push("/account/profile");
             setAnchorEl(false);
@@ -101,7 +100,6 @@ function ProfileButton(props) {
             </Typography>
           </span>
         </MenuItem>
-
         <MenuItem onClick={themeContext.toggleMuiType} dense={true}>
           <span className="menuItem">
             {themeContext.muiType === "light" ? (
@@ -118,15 +116,15 @@ function ProfileButton(props) {
               />
             )}
             <Typography color="textSecondary" variant="body2">
-              {t("rofileButton.changeTheme")}
+              {t("profileButton.changeTheme")}
             </Typography>
           </span>
         </MenuItem>
-        <Feedback closeMenu={() => setAnchorEl(false)} />
+        <Feedback disabled={Boolean(!userContext?.user)} closeMenu={() => setAnchorEl(false)} />
         <InstallPWAButton />
 
         <Divider variant="middle" />
-        <MenuItem
+        {userContext?.user && <MenuItem
           onClick={async () => {
             try {
               await fetch({
@@ -149,9 +147,26 @@ function ProfileButton(props) {
               {t("auth.logout")}
             </Typography>
           </span>
-        </MenuItem>
+        </MenuItem>}
+
+        {!userContext?.user && <MenuItem
+          onClick={() => history.push("/auth/login")}
+          dense={true}
+        >
+          <span className="menuItem">
+            <LoginOutlinedIcon
+              className="menuProfileIcon"
+              color="action"
+              fontSize="small"
+            />
+            <Typography color="textSecondary" variant="body2">
+              {t("auth.login")}
+            </Typography>
+          </span>
+        </MenuItem>}
+
       </Menu>
-    </div>
+    </div >
   );
 }
 export default ProfileButton;
