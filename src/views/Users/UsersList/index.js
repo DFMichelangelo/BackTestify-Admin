@@ -9,7 +9,6 @@ import { Card } from "@mui/material";
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import FloatingActionButton from "components/FloatingActionButton"
-import "./style.scss";
 import { useHistory } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';

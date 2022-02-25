@@ -6,7 +6,6 @@ import EnhancedTable from "components/EnhancedTable";
 import Endpoints from "Endpoints";
 import { useTranslation } from "react-i18next";
 import { Card } from "@mui/material";
-import "./style.scss";
 import BugReportOutlinedIcon from '@mui/icons-material/BugReportOutlined';
 import EmojiObjectsOutlinedIcon from '@mui/icons-material/EmojiObjectsOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
