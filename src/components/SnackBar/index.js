@@ -50,7 +50,7 @@ function SnackBar(props) {
         }
       >
         <div className="flex">
-          {t("themeContext.snackbar.message")}
+          {t(themeContext.snackbar.message)}
         </div>
       </Alert>
     </Snackbar>
