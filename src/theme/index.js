@@ -46,7 +46,7 @@ export default function Theme(props) {
         <Header handleDrawerOpenOnClick={handleDrawerOpenOnClick} />
       )}
       {themeContext.showSidebarComponents(matches) && (<>
-        <DivBehindDrawer />
+        {!matches && <DivBehindDrawer />}
         <Sidebar
           handleDrawerOpenOnHover={handleDrawerOpenOnHover}
           handleDrawerCloseOnHover={handleDrawerCloseOnHover}
