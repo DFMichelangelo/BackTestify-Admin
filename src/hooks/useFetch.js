@@ -16,7 +16,7 @@ function useFetcher(props) {
   const [data, setData] = useState();
   const themeContext = useContext(ThemeContext);
   const counter = React.useRef({});
-
+  const calls = 1
   useEffect(() => {
     if (Array.isArray(props)) fetchAll(props);
     else if (typeof props === "object") fetch(props);
@@ -52,6 +52,7 @@ function useFetcher(props) {
     const addHeaders = _.get(options, "addHeaders", true);
     const redirectToPage500 = _.get(options, "redirectToPage500", false);
     const showErrorSnackBar = _.get(options, "showErrorSnackBar", true);
+    const showStatus400ErrorSnackBar = _.get(options, "showStatus400ErrorSnackBar", true);
     const redirectToLogin = _.get(options, "redirectToLogin", true);
     let addBaseUrl = _.get(options, "addBaseUrl", true);
     addBaseUrl = options?.baseUrl ? false : addBaseUrl;
@@ -108,7 +109,6 @@ function useFetcher(props) {
         return response;
       },
       (err) => {
-        //console.log(err.response)
         if (
           err?.response?.status === 401 ||
           err?.response?.status === 403 ||
@@ -154,7 +154,7 @@ function useFetcher(props) {
             throw err;
           }
         } else if (
-          counter.current[err.config.url + JSON.stringify(err.config.data)] >= 1
+          counter.current[err.config.url + JSON.stringify(err.config.data)] >= calls || calls == 1
         ) {
           if ((err.response?.status === 500 || err.message.toString() === "Network Error") && redirectToPage500 === true) history.push("/error/500?returnUrl=" + history.location.pathname);
           if ((err.response?.status === 500 || err.message.toString() === "Network Error") && redirectToPage500 === false && showErrorSnackBar === true) themeContext.showErrorSnackbar({ message: "somethingWentWrong" });
@@ -162,7 +162,7 @@ function useFetcher(props) {
 
           throw err;
         } else {
-          if (err.response?.status === 400) themeContext.showErrorSnackbar({ message: "validationError" })
+          if (err.response?.status === 400 && showStatus400ErrorSnackBar) themeContext.showErrorSnackbar({ message: "validationError" })
           throw err;
         }
       }
@@ -229,8 +229,7 @@ function useFetcher(props) {
 
   const fetch = useCallback(async (options) => {
     if (options.setLoading === true) setLoading(true);
-    if (!_.get(counter.current, options.url + JSON.stringify(options.data), false)) counter.current[options.url + JSON.stringify(options.data)] = 0;
-
+    if (!_.get(counter.current, options.url + JSON.stringify(options.data), false)) counter.current[options.url + JSON.stringify(options.data)] = 1;
     if (!(options?.data instanceof FormData) && options.file) {
       const formData = new FormData();
       formData.append(options.filename, options.file);
@@ -268,13 +267,14 @@ function useFetcher(props) {
         err?.response?.status === 500 ||
         err.message.toString() === "Network Error"
       ) {
-        if (counter.current[options.url + JSON.stringify(options.data)] < 1) {
+        console.log(counter.current[options.url + JSON.stringify(options.data)])
+        if (counter.current[options.url + JSON.stringify(options.data)] < calls) {
           counter.current[options.url + JSON.stringify(options.data)] =
             counter.current[options.url + JSON.stringify(options.data)] + 1;
           await new Promise((resolve) => setTimeout(resolve, 500));
           return fetch(err.config);
         } else {
-          counter.current[options.url + JSON.stringify(options.data)] = 0;
+          counter.current[options.url + JSON.stringify(options.data)] = 1;
           /*if (err.message.toString() == "Network Error") {
           }*/
           if (options.setLoading !== false) setLoading(false);
