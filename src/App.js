@@ -13,7 +13,7 @@ import { Settings } from "luxon";
 let locale = window.navigator.userLanguage || window.navigator.language;
 
 function App() {
-  Settings.defaultLocale = localStorage.getItem("i18nextLng").split("-")[0] || locale
+  Settings.defaultLocale = localStorage.getItem("i18nextLng")?.split("-")[0] || locale
   yupConfig();
   return (
     <ErrorBoundary>
